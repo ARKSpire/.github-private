@@ -1,23 +1,104 @@
-# .github-private
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shipping Documentation</title>
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #E3F2FD;
+            color: #0D47A1;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 20px 0;
+        }
+
+        form, table {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #0288D1;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        button {
+            background-color: #0288D1;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #01579B;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
         }
+
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
+        }
+
+        td button {
+            margin-right: 5px;
+            width: auto;
+        }
+
+        #statusMessage {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: green;
         }
     </style>
 </head>
@@ -61,24 +142,7 @@
                 </tr>
             </thead>
             <tbody id="document-list">               
-                <tr>
-                    <td>Shipping Letter of Instruction</td>
-                    <td>Invoice</td>
-                    <td>2025-01-17</td>
-                    <td><button class="view-btn">View</button> <button class="delete-btn">Delete</button></td>
-                </tr>
-                <tr>
-                    <td>Credit Application Form</td>
-                    <td>Invoice</td>
-                    <td>2025-01-17</td>
-                    <td><button class="view-btn">View</button> <button class="delete-btn">Delete</button></td>
-                </tr>
-                <tr>
-                    <td>Power of Attorney</td>
-                    <td>Contract</td>
-                    <td>2025-01-17</td>
-                    <td><button class="view-btn">View</button> <button class="delete-btn">Delete</button></td>
-                </tr>
+                <!-- Document rows will be dynamically added here -->
             </tbody>
         </table>
     </div>
@@ -97,6 +161,7 @@
                 return;
             }
 
+            const file = fileInput.files[0];
             const date = new Date().toISOString().split('T')[0]; 
 
             const newRow = document.createElement('tr');
@@ -110,20 +175,24 @@
                 </td>
             `;
             documentList.appendChild(newRow);
-            document.getElementById('upload-form').reset;
+
+            const viewBtn = newRow.querySelector('.view-btn');
             const deleteBtn = newRow.querySelector('.delete-btn');
+
+            // Simulate file viewing
+            viewBtn.addEventListener('click', () => {
+                const fileURL = URL.createObjectURL(file);
+                window.open(fileURL, '_blank');
+            });
+
+            // Remove the row on delete
             deleteBtn.addEventListener('click', () => {
                 documentList.removeChild(newRow);
             });
-        });
-        const deleteButtons = document.querySelectorAll('.delete-btn');
-        deleteButtons.forEach((btn) => {
-            btn.addEventListener('click', (event) => {
-                const row = event.target.closest('tr');
-                documentList.removeChild(row);
-            });
+
+            // Reset the form
+            document.getElementById('upload-form').reset();
         });
     </script>
 </body>
 </html>
-
